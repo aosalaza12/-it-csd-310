@@ -1,5 +1,3 @@
-!pip install pymongo
-!pip install 'pymongo[srv]'
 import  pymongo
 from pymongo import MongoClient
 url = "mongodb+srv://admin:admin@cluster0.cptgd.mongodb.net/pytech"
