@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Author: Alvaro Salazar
 Date: July 13, 2022. 
@@ -48,7 +47,3 @@ print()
 print("End of program, press any key to continue...")
 my_string = input()
 print(my_string)
-
-=======
->>>>>>> c1aaa5ab40cb99d288ca971c550716b33454c654
-
