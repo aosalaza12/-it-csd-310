@@ -6,7 +6,7 @@ Specification:
 program that connects to the pytest database
 """
 
-import mysql.connector
+import mysql.connector 
 from mysql.connector import errorcode
 
 config = {
@@ -14,13 +14,17 @@ config = {
     "password": "Csx01da1$",
     "host": "127.0.0.1",
     "database": "pysports",
-    "raise_on_warmomgs": True
+    "raise_on_warnings": True,
+#    "auth_plugin":"mysql_native_password"
 }
 
 try:
-    db = mysql.connector.connect(**config)
+#    db = mysql.connector.connect(**config)
+    db = mysql.connector.connect(user='pysports_user', password='Csx01da1$',
+                              host='127.0.0.1', database='pysports',
+                              auth_plugin='mysql_native_password')
     
-    print("\n Databse user {} connected to MySQL on host {} with database {} ".format(config["user"], config["host"], config["database"] ))
+    print("\n Database user {} connected to MySQL on host {} with database {} ".format(config["user"], config["host"], config["database"] ))
     
     input("\n\n Press any key to continue...")
     
