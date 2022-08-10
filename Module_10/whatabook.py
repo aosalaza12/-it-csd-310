@@ -72,7 +72,7 @@ config = {
 def show_menu():
     #print("\n-- Main Menu --")
     print()
-    print('\33[34m' + '   --  Main Menu  -- '+ '\33[34m')
+    print('\33[41m' + '   --  Main Menu  -- '+ '\33[0;m')
     print('\33[0m')
     print("")
 
@@ -85,9 +85,11 @@ def show_menu():
         return options
     except ValueError:
         print()
-        print("\nOption Invalid, Try again with a valid option...\n")
+        #print('\n\033[1;32m' + 'Invalid option. Try again with a Valid option. Valid options, 1, 2, 3 or 4.'+ '\033[0;m\n')
+        options = 0
 
-        sys.exit(0)
+        return options
+        #sys.exit(0)
 
 def show_books(_cursor):
     # inner join query 
@@ -96,7 +98,7 @@ def show_books(_cursor):
     # get the results from the cursor
     books=_cursor.fetchall()
 
-    print("\n--- SHOWING THE LIST OF BOOKS ---")
+    print('\n\033[1;33m' + '--- SHOWING THE LIST OF BOOKS ---' + '\033[0;m')
 
     # iterate over the books data, and display the results
      
@@ -108,7 +110,7 @@ def show_locations(_cursor):
 
     locations=_cursor.fetchall()
 
-    print("\n-- SHOWING STORE LOCATIONS --")
+    print('\n\033[1;33m' + '-- SHOWING STORE LOCATIONS --' + '\033[0;m')
     print()
 
     for location in locations:
@@ -122,15 +124,17 @@ def validate_user():
         user_id=int(input('\nEnter a User id : '))
 
         if user_id < 0 or user_id > 3:
-            print("\n     Invalid User id...\n")
+            print("\n    Invalid User id. Log back in to your account.    \n")
             #sys.exit(0)
             valid = False
         return (user_id, valid)
     
     except ValueError:
-        print("\nInvalid User, \n")
-    
-        sys.exit()
+        print("\n    Invalid User id. Log back in to your account.    \n")
+        valid = False
+        user_id = 0
+        return (user_id, valid)
+        #sys.exit()
         
 def get_user(my_user_id):
     cursor.execute("SELECT first_name FROM user"+ " WHERE user_id = {}".format(my_user_id))
@@ -151,7 +155,7 @@ def show_account_menu():
         user_n = user_name[0]+ " " + user_name[1]
                      
         #print("\n-- User Menu -- ", user_n)
-        print('\33[41m' + '               User Menu  - ', user_n + '\33[40m')
+        print('\33[1;44m' + '          User Menu  - ', user_n + '          ' +  '\33[0;m')
         print()
         print("        1. Wishlist\n        2. Add Book\n        3. Main Menu")
         account_option=int(input('        <Enter your option: >: '))
@@ -159,9 +163,12 @@ def show_account_menu():
 
         return account_option
     except ValueError:
-        print("\nInvalid number, program terminated...\n")
+        #print('\n\033[1;32m' + 'Invalid Option, Options valids: 1, 2 or 3. Try again.' + '\033[0;m\n')
+        account_option = 0
+        
+        return account_option
 
-        sys.exit(0)
+        #sys.exit(0)
 
 def show_wishlist(_cursor, _user_id):
     """ query the database for a list of books added to the users wishlist """
@@ -175,7 +182,7 @@ def show_wishlist(_cursor, _user_id):
 
     wishlist=_cursor.fetchall()
 
-    print("\n    -- SHOWING WISHLIST  --")
+    print('\n\033[1;33m' + '    -- SHOWING WISHLIST    --' + '\033[0;m')
 
     for book in wishlist:
         print("        Book Name: {}\n        Author: {}\n        Locale: {}\n".format(book[4], book[5], book[6]))
@@ -193,7 +200,7 @@ def show_books_to_add(_cursor, _user_id):
 
     books_to_add=_cursor.fetchall()
 
-    print("\n-- SHOWING AVAILABLE BOOKS --")
+    print('\n\033[1;33m' + '  -- SHOWING AVAILABLE BOOKS  --' + '\033[0;m')
 
     for book in books_to_add:
         print("        Book Id: {}\n        Book Name: {}\n".format(book[0], book[1]))
@@ -215,7 +222,7 @@ try:
     cursor=db.cursor() # cursor for MySQL queries
     print()
     #print('\033[1m' + '               WELCOME TO THE WHATABOOK APPLICATION' + '\033[0m')
-    print('\33[41m' + '               WELCOME TO THE WHATABOOK APPLICATION' + '\33[40m')
+    print('\33[4;41m' + '          WELCOME TO THE WHATABOOK APPLICATION          ' + '\33[0;m')
 
     user_selection=show_menu() # show the main menu 
 
@@ -264,12 +271,12 @@ try:
 
                         db.commit() # commit the changes to the database 
 
-                        print("\nBook id: {} was added to your wishlist!".format(book_id))
+                        print('\n\033[1;40m' + 'Book id: {} was added to your wishlist!'.format(book_id) + '\n\033[0;m')
                         
 
                     # if the selected option is less than 0 or greater than 3, display an invalid user selection 
-                    if account_option < 0 or account_option > 3:
-                        print("\nInvalid option, please retry...")
+                    if account_option <= 0 or account_option > 3:
+                        print('\n\033[1;32m' + 'Invalid Option, Options valids: 1, 2 or 3. Try again.' + '\033[0;m')
 
                     # show the account menu 
                     account_option=show_account_menu()
@@ -279,13 +286,15 @@ try:
             
 
         # if the user selection is less than 0 or greater than 4, display an invalid user selection
-        if user_selection < 0 or user_selection > 4:
-            print("\nInvalid option, please retry...")
+        if user_selection <= 0 or user_selection > 4:
+            print('\n\033[1;32m' + 'Invalid option. Try again with a Valid option. Valid options, 1, 2, 3 or 4.' + '\033[0;m')
 
         # show the main menu
         user_selection=show_menu()
 
-    print("\n\nProgram terminated...")
+    print('\n\n\033[1;31m' + 'Program terminated. Thank you for using the WhatABook Application. ' + '\033[0;m')
+    print()
+    
 
 except mysql.connector.Error as err:
     """ handle errors """
